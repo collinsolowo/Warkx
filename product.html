@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - Warkx</title>
+    <meta name="description"
+        content="Premium product details with size selection, color options, and related products.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#0B1220',
+                        'slate-dark': '#0F172A',
+                        'cyan-accent': '#00E5FF',
+                        'white-soft': '#F8FAFC',
+                        'slate-gray': '#94A3B8',
+                        'emerald-accent': '#22C55E'
+                    },
+                    fontFamily: {
+                        'sora': ['Sora', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+
+    <style>
+        /* Glassmorphism effects */
+        .glass {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #00E5FF, #22C55E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0F172A;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00E5FF;
+            border-radius: 4px;
+        }
+
+        /* Product image gallery */
+        .product-gallery {
+            position: relative;
+        }
+
+        .gallery-main {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+
+        .gallery-main img {
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-main:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-thumbnails {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .thumbnail.active {
+            border-color: #00E5FF;
+        }
+
+        .thumbnail:hover {
+            border-color: #22C55E;
+        }
+
+        /* Size selector */
+        .size-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .size-option {
+            padding: 0.75rem;
+            border: 2px solid #374151;
+            border-radius: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #1F2937;
+        }
+
+        .size-option:hover {
+            border-color: #00E5FF;
+        }
+
+        .size-option.selected {
+            border-color: #00E5FF;
+            background: rgba(0, 229, 255, 0.1);
+            color: #00E5FF;
+        }
+
+        .size-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Color selector */
+        .color-selector {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.selected {
+            border-color: #00E5FF;
+            transform: scale(1.1);
+        }
+
+        .color-option::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            transition: border-color 0.3s ease;
+        }
+
+        .color-option.selected::after {
+            border-color: #00E5FF;
+        }
+
+        /* Accordion */
+        .accordion-item {
+            border-bottom: 1px solid #374151;
+        }
+
+        .accordion-header {
+            padding: 1.5rem 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-content.active {
+            max-height: 500px;
+        }
+
+        /* Quantity selector */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 2px solid #374151;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            width: fit-content;
+        }
+
+        .quantity-btn {
+            padding: 0.75rem 1rem;
+            background: #1F2937;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: #374151;
+        }
+
+        .quantity-input {
+            padding: 0.75rem 1rem;
+            background: transparent;
+            border: none;
+            color: white;
+            text-align: center;
+            width: 60px;
+        }
+
+        /* Related products carousel */
+        .related-products {
+            margin-top: 4rem;
+        }
+
+        .carousel-container {
+            position: relative;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 229, 255, 0.1);
+            border: 2px solid #00E5FF;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .carousel-nav:hover {
+            background: rgba(0, 229, 255, 0.2);
+        }
+
+        .carousel-nav.prev {
+            left: -24px;
+        }
+
+        .carousel-nav.next {
+            right: -24px;
+        }
+
+        /* Button styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #00E5FF, #22C55E);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 229, 255, 0.3);
+        }
+
+        .btn-secondary {
+            border: 2px solid #00E5FF;
+            color: #00E5FF;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #00E5FF;
+            color: #0B1220;
+        }
+    </style>
+</head>
+
+<body class="bg-navy text-white-soft font-inter">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <img src="resources/logo.png" alt="Warkx" class="h-8 w-auto">
+                    <span class="ml-3 text-xl font-sora font-bold gradient-text">Warkx</span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="index.html"
+                        class="text-slate-gray hover:text-cyan-accent transition-colors font-medium">Home</a>
+                    <a href="shop.html" class="text-white hover:text-cyan-accent transition-colors font-medium">Shop</a>
+                    <a href="shop.html?category=men"
+                        class="text-slate-gray hover:text-cyan-accent transition-colors font-medium">Men</a>
+                    <a href="shop.html?category=women"
+                        class="text-slate-gray hover:text-cyan-accent transition-colors font-medium">Women</a>
+                    <a href="shop.html?category=accessories"
+                        class="text-slate-gray hover:text-cyan-accent transition-colors font-medium">Accessories</a>
+                </nav>
+
+                <!-- Header Actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- Search -->
+                    <button class="text-slate-gray hover:text-cyan-accent transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Cart -->
+                    <a href="checkout.html">
+                        <button class="relative text-slate-gray hover:text-cyan-accent transition-colors"
+                            data-toggle-cart data-cart-icon>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9m-9 0V19a2 2 0 002 2h7a2 2 0 002-2v-6">
+                                </path>
+                            </svg>
+                            <span
+                                class="absolute -top-2 -right-2 bg-cyan-accent text-navy text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
+                                data-cart-count>0</span>
+                        </button>
+                    </a>
+
+                    <!-- Mobile Menu -->
+                    <button class="md:hidden text-slate-gray hover:text-cyan-accent">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="pt-24 pb-6 bg-slate-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <ol class="flex items-center space-x-2 text-sm">
+                <li><a href="index.html" class="text-slate-gray hover:text-cyan-accent transition-colors">Home</a></li>
+                <li class="text-slate-gray">/</li>
+                <li><a href="shop.html" class="text-slate-gray hover:text-cyan-accent transition-colors">Shop</a></li>
+                <li class="text-slate-gray">/</li>
+                <li class="text-white">Product Details</li>
+            </ol>
+        </div>
+    </nav>
+
+    <!-- Product Details -->
+    <section class="py-12 bg-navy">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Product Images -->
+                <div class="product-gallery" data-aos="fade-up">
+                    <div class="gallery-main mb-4">
+                        <img src="resources/product-1.jpg" alt="Product Image"
+                            class="w-full aspect-square object-cover rounded-2xl" data-main-image>
+                    </div>
+
+                    <div class="gallery-thumbnails">
+                        <div class="thumbnail active">
+                            <img src="resources/product-1.jpg" alt="View 1" class="w-full h-full object-cover">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="resources/product-2.jpg" alt="View 2" class="w-full h-full object-cover">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="resources/product-3.jpg" alt="View 3" class="w-full h-full object-cover">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="resources/product-4.jpg" alt="View 4" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="product-info" data-aos="fade-up" data-aos-delay="200">
+                    <div class="mb-6">
+                        <h1 class="text-3xl md:text-4xl font-sora font-bold mb-2" data-product-title>Technical
+                            Performance Jacket</h1>
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="flex items-center">
+                                <span class="text-yellow-400 text-lg">★★★★★</span>
+                                <span class="ml-2 text-slate-gray">(4.8)</span>
+                            </div>
+                            <span class="text-slate-gray">•</span>
+                            <span class="text-slate-gray">In Stock</span>
+                        </div>
+                        <div class="text-3xl font-bold gradient-text mb-6" data-product-price>$299</div>
+                    </div>
+
+                    <!-- Color Selection -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold mb-4">Color</h3>
+                        <div class="color-selector">
+                            <div class="color-option selected" data-color="black" style="background-color: #000000;"
+                                title="Black"></div>
+                            <div class="color-option" data-color="navy" style="background-color: #1E3A8A;" title="Navy">
+                            </div>
+                            <div class="color-option" data-color="gray" style="background-color: #6B7280;" title="Gray">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Size Selection -->
+                    <div class="mb-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold">Size</h3>
+                            <button class="text-cyan-accent text-sm hover:text-emerald-accent transition-colors">Size
+                                Guide</button>
+                        </div>
+                        <div class="size-selector">
+                            <div class="size-option" data-size="S">S</div>
+                            <div class="size-option selected" data-size="M">M</div>
+                            <div class="size-option" data-size="L">L</div>
+                            <div class="size-option" data-size="XL">XL</div>
+                        </div>
+                    </div>
+
+                    <!-- Quantity and Add to Cart -->
+                    <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                        <div class="quantity-selector">
+                            <button class="quantity-btn" data-quantity-decrease>-</button>
+                            <input type="number" class="quantity-input" value="1" min="1" max="10" data-quantity-input>
+                            <button class="quantity-btn" data-quantity-increase>+</button>
+                        </div>
+                        <button class="btn-primary flex-1 px-8 py-4 rounded-lg text-white font-semibold"
+                            data-add-to-cart="1">
+                            Add to Cart
+                        </button>
+                        <button class="btn-secondary px-8 py-4 rounded-lg font-semibold">
+                            ♡ Wishlist
+                        </button>
+                    </div>
+
+                    <!-- Product Features -->
+                    <div class="glass rounded-2xl p-6 mb-8">
+                        <h3 class="text-lg font-semibold mb-4">Key Features</h3>
+                        <ul class="space-y-2 text-slate-gray">
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-cyan-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                Waterproof and breathable fabric
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-cyan-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                YKK zippers with storm flaps
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-cyan-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                Multiple secure pockets
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-cyan-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                Adjustable hood and cuffs
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Product Details Accordion -->
+                    <div class="accordion">
+                        <div class="accordion-item">
+                            <div class="accordion-header" data-accordion-trigger>
+                                <span>Description</span>
+                                <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                            <div class="accordion-content active" data-accordion-content>
+                                <div class="pb-6 text-slate-gray">
+                                    <p class="mb-4">The Technical Performance Jacket represents the pinnacle of modern
+                                        outerwear design. Engineered for urban explorers and outdoor enthusiasts alike,
+                                        this jacket seamlessly blends cutting-edge technology with contemporary style.
+                                    </p>
+                                    <p class="mb-4">Crafted from premium waterproof fabric with advanced breathability,
+                                        it keeps you dry and comfortable in any weather condition. The minimalist design
+                                        features clean lines and subtle branding, making it perfect for both city
+                                        streets and mountain trails.</p>
+                                    <p>Every detail has been carefully considered, from the YKK zippers with storm flaps
+                                        to the multiple secure pockets that keep your essentials safe and accessible.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <div class="accordion-header" data-accordion-trigger>
+                                <span>Materials & Care</span>
+                                <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                            <div class="accordion-content" data-accordion-content>
+                                <div class="pb-6 text-slate-gray">
+                                    <p class="mb-4"><strong>Materials:</strong></p>
+                                    <ul class="list-disc list-inside mb-4 space-y-1">
+                                        <li>Outer shell: 100% recycled polyester with DWR finish</li>
+                                        <li>Membrane: Advanced waterproof-breathable technology</li>
+                                        <li>Lining: 100% recycled polyester mesh</li>
+                                        <li>Zippers: YKK AquaGuard water-resistant</li>
+                                    </ul>
+                                    <p class="mb-4"><strong>Care Instructions:</strong></p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>Machine wash cold with like colors</li>
+                                        <li>Use mild detergent, no fabric softener</li>
+                                        <li>Tumble dry low heat to reactivate DWR</li>
+                                        <li>Do not iron or dry clean</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <div class="accordion-header" data-accordion-trigger>
+                                <span>Sizing & Fit</span>
+                                <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                            <div class="accordion-content" data-accordion-content>
+                                <div class="pb-6 text-slate-gray">
+                                    <p class="mb-4">This jacket features a regular fit that's designed for layering. The
+                                        articulated sleeves and adjustable features ensure freedom of movement and a
+                                        personalized fit.</p>
+                                    <p class="mb-4"><strong>Size Guide:</strong></p>
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-sm">
+                                            <thead>
+                                                <tr class="border-b border-slate-600">
+                                                    <th class="text-left py-2">Size</th>
+                                                    <th class="text-left py-2">Chest</th>
+                                                    <th class="text-left py-2">Length</th>
+                                                    <th class="text-left py-2">Sleeve</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="border-b border-slate-700">
+                                                    <td class="py-2">S</td>
+                                                    <td class="py-2">38-40"</td>
+                                                    <td class="py-2">27"</td>
+                                                    <td class="py-2">34"</td>
+                                                </tr>
+                                                <tr class="border-b border-slate-700">
+                                                    <td class="py-2">M</td>
+                                                    <td class="py-2">40-42"</td>
+                                                    <td class="py-2">28"</td>
+                                                    <td class="py-2">35"</td>
+                                                </tr>
+                                                <tr class="border-b border-slate-700">
+                                                    <td class="py-2">L</td>
+                                                    <td class="py-2">42-44"</td>
+                                                    <td class="py-2">29"</td>
+                                                    <td class="py-2">36"</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="py-2">XL</td>
+                                                    <td class="py-2">44-46"</td>
+                                                    <td class="py-2">30"</td>
+                                                    <td class="py-2">37"</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="related-products py-20 bg-slate-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-sora font-bold mb-4 gradient-text">You May Also Like</h2>
+                <p class="text-xl text-slate-gray">Complete your look with these complementary pieces</p>
+            </div>
+
+            <div class="carousel-container" data-aos="fade-up">
+                <button class="carousel-nav prev" data-carousel-prev>
+                    <svg class="w-6 h-6 text-cyan-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
+                        </path>
+                    </svg>
+                </button>
+
+                <div class="splide" data-related-carousel>
+                    <div class="splide__track">
+                        <ul class="splide__list" data-related-products>
+                            <!-- Related products will be dynamically loaded -->
+                        </ul>
+                    </div>
+                </div>
+
+                <button class="carousel-nav next" data-carousel-next>
+                    <svg class="w-6 h-6 text-cyan-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-navy py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-6">
+                    <img src="resources/logo.png" alt="Warkx" class="h-8 w-auto">
+                    <span class="ml-3 text-xl font-sora font-bold gradient-text">Warkx</span>
+                </div>
+                <p class="text-slate-gray mb-6 max-w-2xl mx-auto">
+                    Redefining everyday style with premium fashion designed for movement and built for confidence.
+                    Experience the future of fashion with our 24/7 automated ordering system.
+                </p>
+                <div class="border-t border-slate-700 pt-6">
+                    <p class="text-slate-gray text-sm">
+                        © 2024 Warkx. All rights reserved. | Designed for the future.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Slide-in Panel -->
+    <div class="fixed inset-y-0 right-0 w-full sm:w-96 bg-slate-900 transform translate-x-full transition-transform duration-300 ease-in-out z-50 glass"
+        data-cart-panel>
+        <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between p-6 border-b border-slate-700">
+                <h3 class="text-xl font-sora font-bold">Shopping Cart</h3>
+                <button class="text-slate-gray hover:text-white" data-close-cart>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto" data-cart-items>
+                <!-- Cart items will be dynamically loaded -->
+            </div>
+
+            <div class="p-6 border-t border-slate-700">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-lg font-semibold">Total:</span>
+                    <span class="text-xl font-bold text-cyan-accent" data-cart-total>$0</span>
+                </div>
+                <a href="checkout.html"
+                    class="w-full py-4 bg-gradient-to-r from-cyan-accent to-emerald-accent text-navy font-semibold rounded-lg text-center block hover:shadow-lg hover:shadow-cyan-accent/25 transition-all duration-300">
+                    Proceed to Checkout
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="main.js"></script>
+
+    <script>
+        // Product Detail Page Functionality
+        class ProductDetailPage {
+            constructor() {
+                this.selectedSize = 'M';
+                this.selectedColor = 'black';
+                this.quantity = 1;
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.initializeCarousel();
+                this.loadRelatedProducts();
+            }
+
+            setupEventListeners() {
+                // Gallery thumbnails
+                document.querySelectorAll('.thumbnail').forEach(thumb => {
+                    thumb.addEventListener('click', (e) => {
+                        this.switchMainImage(e.target.closest('.thumbnail'));
+                    });
+                });
+
+                // Size selection
+                document.querySelectorAll('[data-size]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.selectSize(e.target.dataset.size);
+                    });
+                });
+
+                // Color selection
+                document.querySelectorAll('[data-color]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.selectColor(e.target.dataset.color);
+                    });
+                });
+
+                // Quantity controls
+                document.querySelector('[data-quantity-increase]').addEventListener('click', () => {
+                    this.changeQuantity(1);
+                });
+
+                document.querySelector('[data-quantity-decrease]').addEventListener('click', () => {
+                    this.changeQuantity(-1);
+                });
+
+                // Accordion
+                document.querySelectorAll('[data-accordion-trigger]').forEach(trigger => {
+                    trigger.addEventListener('click', (e) => {
+                        this.toggleAccordion(e.target.closest('.accordion-item'));
+                    });
+                });
+
+                // Carousel navigation
+                document.querySelector('[data-carousel-prev]').addEventListener('click', () => {
+                    if (this.relatedCarousel) {
+                        this.relatedCarousel.go('<');
+                    }
+                });
+
+                document.querySelector('[data-carousel-next]').addEventListener('click', () => {
+                    if (this.relatedCarousel) {
+                        this.relatedCarousel.go('>');
+                    }
+                });
+            }
+
+            switchMainImage(thumbnail) {
+                // Remove active class from all thumbnails
+                document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+
+                // Add active class to clicked thumbnail
+                thumbnail.classList.add('active');
+
+                // Update main image
+                const mainImage = document.querySelector('[data-main-image]');
+                const thumbnailImg = thumbnail.querySelector('img');
+                mainImage.src = thumbnailImg.src;
+                mainImage.alt = thumbnailImg.alt;
+
+                // Add fade transition
+                mainImage.style.opacity = '0';
+                setTimeout(() => {
+                    mainImage.style.opacity = '1';
+                }, 100);
+            }
+
+            selectSize(size) {
+                // Remove selected class from all size options
+                document.querySelectorAll('[data-size]').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+
+                // Add selected class to clicked size
+                document.querySelector(`[data-size="${size}"]`).classList.add('selected');
+                this.selectedSize = size;
+            }
+
+            selectColor(color) {
+                // Remove selected class from all color options
+                document.querySelectorAll('[data-color]').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+
+                // Add selected class to clicked color
+                document.querySelector(`[data-color="${color}"]`).classList.add('selected');
+                this.selectedColor = color;
+
+                // Update product images based on color (mock functionality)
+                this.updateProductImages(color);
+            }
+
+            updateProductImages(color) {
+                // This would typically fetch different product images based on color
+                // For demo purposes, we'll just update the main image
+                const colorMap = {
+                    black: 'resources/product-1.jpg',
+                    navy: 'resources/product-2.jpg',
+                    gray: 'resources/product-3.jpg'
+                };
+
+                const mainImage = document.querySelector('[data-main-image]');
+                if (colorMap[color]) {
+                    mainImage.src = colorMap[color];
+                }
+            }
+
+            changeQuantity(change) {
+                const quantityInput = document.querySelector('[data-quantity-input]');
+                const newQuantity = Math.max(1, Math.min(10, this.quantity + change));
+
+                if (newQuantity !== this.quantity) {
+                    this.quantity = newQuantity;
+                    quantityInput.value = newQuantity;
+
+                    // Add animation feedback
+                    quantityInput.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        quantityInput.style.transform = 'scale(1)';
+                    }, 200);
+                }
+            }
+
+            toggleAccordion(accordionItem) {
+                const content = accordionItem.querySelector('[data-accordion-content]');
+                const icon = accordionItem.querySelector('[data-accordion-trigger] svg');
+
+                if (content.classList.contains('active')) {
+                    content.classList.remove('active');
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    // Close all other accordions
+                    document.querySelectorAll('[data-accordion-content]').forEach(c => {
+                        c.classList.remove('active');
+                    });
+                    document.querySelectorAll('[data-accordion-trigger] svg').forEach(i => {
+                        i.style.transform = 'rotate(0deg)';
+                    });
+
+                    // Open clicked accordion
+                    content.classList.add('active');
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            }
+
+            initializeCarousel() {
+                if (typeof Splide !== 'undefined') {
+                    const carouselElement = document.querySelector('[data-related-carousel]');
+                    if (carouselElement) {
+                        this.relatedCarousel = new Splide(carouselElement, {
+                            type: 'loop',
+                            perPage: 4,
+                            perMove: 1,
+                            gap: '1rem',
+                            pagination: false,
+                            arrows: false,
+                            breakpoints: {
+                                1024: { perPage: 3 },
+                                768: { perPage: 2 },
+                                480: { perPage: 1 }
+                            }
+                        }).mount();
+                    }
+                }
+            }
+
+            loadRelatedProducts() {
+                if (!window.warkxApp) return;
+
+                // Get 4 random products (excluding current product)
+                const relatedProducts = window.warkxApp.products
+                    .filter(p => p.id !== 1) // Exclude current product
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 4);
+
+                const container = document.querySelector('[data-related-products]');
+                if (container) {
+                    container.innerHTML = relatedProducts.map(product => `
+                        <li class="splide__slide">
+                            <div class="bg-slate-800 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105">
+                                <div class="aspect-square overflow-hidden">
+                                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-semibold mb-2">${product.name}</h3>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-cyan-accent font-bold">$${product.price}</span>
+                                        <button class="text-sm text-slate-gray hover:text-cyan-accent transition-colors" data-add-to-cart="${product.id}">
+                                            Add to Cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    `).join('');
+                }
+            }
+        }
+
+        // Initialize product detail page
+        document.addEventListener('DOMContentLoaded', () => {
+            window.productDetailPage = new ProductDetailPage();
+        });
+    </script>
+</body>
+
+</html>

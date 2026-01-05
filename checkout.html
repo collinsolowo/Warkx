@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Warkx</title>
+    <meta name="description" content="Complete your purchase with secure checkout. Multiple payment options available.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#0B1220',
+                        'slate-dark': '#0F172A',
+                        'cyan-accent': '#00E5FF',
+                        'white-soft': '#F8FAFC',
+                        'slate-gray': '#94A3B8',
+                        'emerald-accent': '#22C55E'
+                    },
+                    fontFamily: {
+                        'sora': ['Sora', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <style>
+        /* Glassmorphism effects */
+        .glass {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #00E5FF, #22C55E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0F172A;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00E5FF;
+            border-radius: 4px;
+        }
+
+        /* Form styling */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #F8FAFC;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #1F2937;
+            border: 2px solid #374151;
+            border-radius: 0.5rem;
+            color: #F8FAFC;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00E5FF;
+            background: #111827;
+        }
+
+        .form-input::placeholder {
+            color: #94A3B8;
+        }
+
+        /* Progress indicator */
+        .progress-bar {
+            height: 4px;
+            background: #374151;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00E5FF, #22C55E);
+            transition: width 0.5s ease;
+        }
+
+        /* Step indicators */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-number {
+            background: linear-gradient(135deg, #00E5FF, #22C55E);
+            color: #0B1220;
+        }
+
+        .step.completed .step-number {
+            background: #22C55E;
+            color: white;
+        }
+
+        .step:not(.active):not(.completed) .step-number {
+            background: #374151;
+            color: #94A3B8;
+        }
+
+        .step-connector {
+            width: 60px;
+            height: 2px;
+            background: #374151;
+            margin: 0 1rem;
+        }
+
+        .step.completed .step-connector {
+            background: #22C55E;
+        }
+
+        /* Delivery options */
+        .delivery-option {
+            border: 2px solid #374151;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #1F2937;
+        }
+
+        .delivery-option:hover {
+            border-color: #00E5FF;
+        }
+
+        .delivery-option.selected {
+            border-color: #00E5FF;
+            background: rgba(0, 229, 255, 0.05);
+        }
+
+        /* Payment methods */
+        .payment-method {
+            border: 2px solid #374151;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #1F2937;
+            display: flex;
+            align-items: center;
+            justify-content: between;
+        }
+
+        .payment-method:hover {
+            border-color: #00E5FF;
+        }
+
+        .payment-method.selected {
+            border-color: #00E5FF;
+            background: rgba(0, 229, 255, 0.05);
+        }
+
+        /* Order summary */
+        .order-summary {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #374151;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin-right: 1rem;
+        }
+
+        /* Button styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #00E5FF, #22C55E);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 229, 255, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Collapsible sections */
+        .collapsible {
+            border: 1px solid #374151;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .collapsible-header {
+            padding: 1rem;
+            background: #1F2937;
+            cursor: pointer;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .collapsible-header:hover {
+            background: #374151;
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .collapsible-content.active {
+            max-height: 500px;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .step-indicator {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .step-connector {
+                display: none;
+            }
+
+            .order-summary {
+                position: static;
+                margin-top: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-navy text-white-soft font-inter">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <img src="resources/logo.png" alt="Warkx" class="h-8 w-auto">
+                    <span class="ml-3 text-xl font-sora font-bold gradient-text">Warkx</span>
+                </div>
+
+                <!-- Progress Indicator -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <span class="text-sm text-slate-gray">Checkout Progress</span>
+                    <div class="progress-bar w-48">
+                        <div class="progress-fill" style="width: 25%" data-progress-fill></div>
+                    </div>
+                </div>
+
+                <!-- Secure Checkout Badge -->
+                <div class="flex items-center space-x-2 text-sm text-slate-gray">
+                    <svg class="w-5 h-5 text-emerald-accent" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Secure Checkout</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Step Indicator -->
+    <section class="pt-24 pb-8 bg-slate-dark">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="step-indicator" data-step-indicator>
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-connector"></div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-connector"></div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-connector"></div>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-number">4</div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <h1 class="text-3xl md:text-4xl font-sora font-bold mb-2 gradient-text" data-step-title>Customer
+                    Information</h1>
+                <p class="text-slate-gray" data-step-subtitle>Please provide your contact details</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout Content -->
+    <section class="py-12 bg-navy">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Checkout Form -->
+                <div class="lg:col-span-2">
+                    <!-- Step 1: Customer Information -->
+                    <div class="checkout-step active" data-checkout-step="1">
+                        <div class="glass rounded-2xl p-8">
+                            <h2 class="text-2xl font-sora font-bold mb-6">Contact Information</h2>
+
+                            <form class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="form-group">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" class="form-input" placeholder="John" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" class="form-input" placeholder="Doe" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" class="form-input" placeholder="john@example.com" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-input" placeholder="+1 (555) 123-4567" required>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="newsletter" class="mr-3">
+                                    <label for="newsletter" class="text-sm text-slate-gray">Subscribe to our newsletter
+                                        for exclusive offers and updates</label>
+                                </div>
+
+                                <button type="button"
+                                    class="btn-primary w-full py-4 rounded-lg text-white font-semibold" data-next-step>
+                                    Continue to Shipping
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Shipping Address -->
+                    <div class="checkout-step hidden" data-checkout-step="2">
+                        <div class="glass rounded-2xl p-8">
+                            <h2 class="text-2xl font-sora font-bold mb-6 text-white">
+                                Shipping Address
+                            </h2>
+
+                            <form class="space-y-6">
+
+                                <div class="form-group">
+                                    <label class="form-label text-gray-300">Address Line 1</label>
+                                    <input type="text"
+                                        class="form-input bg-[#0f1a17] border border-[#1f3d33] text-white placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                        placeholder="House number, street name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label text-gray-300">Address Line 2 (Optional)</label>
+                                    <input type="text"
+                                        class="form-input bg-[#0f1a17] border border-[#1f3d33] text-white placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                        placeholder="Apartment, suite, landmark">
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                                    <div class="form-group">
+                                        <label class="form-label text-gray-300">City / LGA</label>
+                                        <input type="text"
+                                            class="form-input bg-[#0f1a17] border border-[#1f3d33] text-white placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                            placeholder="Ikeja" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label text-gray-300">State</label>
+                                        <select
+                                            class="form-input bg-[#0f1a17] border border-[#1f3d33] text-white focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                            required>
+                                            <option value="">Select State</option>
+                                            <option>Abia</option>
+                                            <option>Adamawa</option>
+                                            <option>Akwa Ibom</option>
+                                            <option>Anambra</option>
+                                            <option>Bauchi</option>
+                                            <option>Bayelsa</option>
+                                            <option>Benue</option>
+                                            <option>Borno</option>
+                                            <option>Cross River</option>
+                                            <option>Delta</option>
+                                            <option>Ebonyi</option>
+                                            <option>Edo</option>
+                                            <option>Ekiti</option>
+                                            <option>Enugu</option>
+                                            <option>Gombe</option>
+                                            <option>Imo</option>
+                                            <option>Jigawa</option>
+                                            <option>Kaduna</option>
+                                            <option>Kano</option>
+                                            <option>Katsina</option>
+                                            <option>Kebbi</option>
+                                            <option>Kogi</option>
+                                            <option>Kwara</option>
+                                            <option>Lagos</option>
+                                            <option>Nasarawa</option>
+                                            <option>Niger</option>
+                                            <option>Ogun</option>
+                                            <option>Ondo</option>
+                                            <option>Osun</option>
+                                            <option>Oyo</option>
+                                            <option>Plateau</option>
+                                            <option>Rivers</option>
+                                            <option>Sokoto</option>
+                                            <option>Taraba</option>
+                                            <option>Yobe</option>
+                                            <option>Zamfara</option>
+                                            <option>Federal Capital Territory (FCT)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label text-gray-300">Postal Code</label>
+                                        <input type="text"
+                                            class="form-input bg-[#0f1a17] border border-[#1f3d33] text-white placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                            placeholder="100001" required>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label text-gray-300">Country</label>
+                                    <select
+                                        class="form-input bg-[#0f1a17] border border-[#1f3d33] text-white cursor-not-allowed"
+                                        disabled>
+                                        <option value="NG">Nigeria</option>
+                                    </select>
+                                </div>
+
+                                <div class="flex gap-4 pt-4">
+                                    <button type="button" class="btn-secondary flex-1 py-4 rounded-lg font-semibold"
+                                        data-prev-step>
+                                        Back
+                                    </button>
+
+                                    <button type="button"
+                                        class="btn-primary flex-1 py-4 rounded-lg text-white font-semibold bg-green-600 hover:bg-green-700 transition"
+                                        data-next-step>
+                                        Continue to Delivery
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <!-- Step 3: Delivery Options -->
+                    <div class="checkout-step hidden" data-checkout-step="3">
+                        <div class="glass rounded-2xl p-8">
+                            <h2 class="text-2xl font-sora font-bold mb-6">Delivery Options</h2>
+
+                            <div class="space-y-4 mb-8">
+                                <div class="delivery-option selected" data-delivery-option data-delivery-price="0">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="font-semibold">Standard Shipping</h3>
+                                            <p class="text-slate-gray text-sm">5-7 business days</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="font-bold text-cyan-accent">FREE</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="delivery-option" data-delivery-option data-delivery-price="15">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="font-semibold">Express Shipping</h3>
+                                            <p class="text-slate-gray text-sm">2-3 business days</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="font-bold text-cyan-accent">$15.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="delivery-option" data-delivery-option data-delivery-price="35">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="font-semibold">Next Day Delivery</h3>
+                                            <p class="text-slate-gray text-sm">Order by 2PM for next day</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="font-bold text-cyan-accent">$35.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <button type="button" class="btn-secondary flex-1 py-4 rounded-lg font-semibold"
+                                    data-prev-step>
+                                    Back
+                                </button>
+                                <button type="button"
+                                    class="btn-primary flex-1 py-4 rounded-lg text-white font-semibold" data-next-step>
+                                    Continue to Payment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Payment Information -->
+                    <div class="checkout-step hidden" data-checkout-step="4">
+                        <div class="glass rounded-2xl p-8">
+                            <h2 class="text-2xl font-sora font-bold mb-6">Payment Information</h2>
+
+                            <div class="space-y-4 mb-8">
+                                <div class="payment-method selected" data-payment-method>
+                                    <div class="flex items-center">
+                                        <input type="radio" name="payment" value="card" class="mr-3" checked>
+                                        <div class="flex items-center">
+                                            <svg class="w-8 h-8 mr-3 text-cyan-accent" fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path d="M2 4h20v16H2V4zm2 2v12h16V6H4zm2 2h12v2H6V8zm0 4h8v2H6v-2z" />
+                                            </svg>
+                                            <div>
+                                                <h3 class="font-semibold">Credit/Debit Card</h3>
+                                                <p class="text-slate-gray text-sm">Visa, Mastercard, American Express
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="payment-method" data-payment-method>
+                                    <div class="flex items-center">
+                                        <input type="radio" name="payment" value="paypal" class="mr-3">
+                                        <div class="flex items-center">
+                                            <svg class="w-8 h-8 mr-3 text-cyan-accent" fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path
+                                                    d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.26-.93 4.778-4.005 7.201-9.138 7.201h-2.19a.75.75 0 0 0-.741.63L7.17 19.875h4.78a.641.641 0 0 0 .633-.74l.034-.2.65-4.135.042-.23a.641.641 0 0 1 .633-.74h.398c3.66 0 6.526-1.49 7.36-5.797.348-1.8.166-3.302-.675-4.35z" />
+                                            </svg>
+                                            <div>
+                                                <h3 class="font-semibold">PayPal</h3>
+                                                <p class="text-slate-gray text-sm">Pay with your PayPal account</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="payment-method" data-payment-method>
+                                    <div class="flex items-center">
+                                        <input type="radio" name="payment" value="apple" class="mr-3">
+                                        <div class="flex items-center">
+                                            <svg class="w-8 h-8 mr-3 text-cyan-accent" fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path
+                                                    d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                                            </svg>
+                                            <div>
+                                                <h3 class="font-semibold">Apple Pay</h3>
+                                                <p class="text-slate-gray text-sm">Touch ID or Face ID</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Details (shown when card is selected) -->
+                            <div class="space-y-6" data-card-details>
+                                <div class="form-group">
+                                    <label class="form-label">Card Number</label>
+                                    <input type="text" class="form-input" placeholder="1234 5678 9012 3456"
+                                        maxlength="19">
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Expiry Date</label>
+                                        <input type="text" class="form-input" placeholder="MM/YY" maxlength="5">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">CVV</label>
+                                        <input type="text" class="form-input" placeholder="123" maxlength="4">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Cardholder Name</label>
+                                    <input type="text" class="form-input" placeholder="John Doe">
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <button type="button" class="btn-secondary flex-1 py-4 rounded-lg font-semibold"
+                                    data-prev-step>
+                                    Back
+                                </button>
+                                <button type="button"
+                                    class="btn-primary flex-1 py-4 rounded-lg text-white font-semibold" data-place-order
+                                    disabled>
+                                    Place Order
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="lg:col-span-1">
+                    <div class="order-summary glass rounded-2xl p-8" data-aos="fade-up" data-aos-delay="200">
+                        <h2 class="text-2xl font-sora font-bold mb-6">Order Summary</h2>
+
+                        <!-- Order Items -->
+                        <div class="space-y-4 mb-6" data-order-items>
+                            <!-- Items will be dynamically loaded -->
+                        </div>
+
+                        <!-- Discount Code -->
+                        <div class="mb-6">
+                            <div class="collapsible">
+                                <div class="collapsible-header" data-collapsible-trigger>
+                                    <span>Add discount code</span>
+                                    <svg class="w-5 h-5 transform transition-transform" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                                <div class="collapsible-content" data-collapsible-content>
+                                    <div class="p-4">
+                                        <div class="flex gap-2">
+                                            <input type="text" class="form-input flex-1"
+                                                placeholder="Enter discount code">
+                                            <button
+                                                class="btn-primary px-4 py-2 rounded-lg text-white font-semibold">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order Totals -->
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between">
+                                <span>Subtotal</span>
+                                <span data-subtotal>$0.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Shipping</span>
+                                <span data-shipping-cost>$0.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Tax</span>
+                                <span data-tax>$0.00</span>
+                            </div>
+                            <div class="border-t border-slate-600 pt-3">
+                                <div class="flex justify-between text-xl font-bold">
+                                    <span>Total</span>
+                                    <span class="gradient-text" data-total>$0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Badges -->
+                        <div class="text-center">
+                            <div class="flex items-center justify-center space-x-4 text-sm text-slate-gray">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1 text-emerald-accent" fill="currentColor"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    SSL Encrypted
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1 text-emerald-accent" fill="currentColor"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    Secure Payment
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-dark py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-6">
+                    <img src="resources/logo.png" alt="Warkx" class="h-8 w-auto">
+                    <span class="ml-3 text-xl font-sora font-bold gradient-text">Warkx</span>
+                </div>
+                <p class="text-slate-gray mb-6 max-w-2xl mx-auto">
+                    Redefining everyday style with premium fashion designed for movement and built for confidence.
+                    Experience the future of fashion with our 24/7 automated ordering system.
+                </p>
+                <div class="border-t border-slate-700 pt-6">
+                    <p class="text-slate-gray text-sm">
+                        © 2024 Warkx. All rights reserved. | Designed for the future.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center" data-success-modal>
+        <div class="glass rounded-2xl p-8 max-w-md mx-4 text-center">
+            <div class="w-16 h-16 bg-emerald-accent rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="text-2xl font-sora font-bold mb-2 gradient-text">Order Placed Successfully!</h3>
+            <p class="text-slate-gray mb-6">Thank you for your purchase. You'll receive a confirmation email shortly.
+            </p>
+            <button class="btn-primary w-full py-3 rounded-lg text-white font-semibold" data-close-modal>
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="main.js"></script>
+
+    <script>
+        // Checkout Page Functionality
+        class CheckoutPage {
+            constructor() {
+                this.currentStep = 1;
+                this.selectedDeliveryPrice = 0;
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.loadOrderSummary();
+                this.updateStepDisplay();
+            }
+
+            setupEventListeners() {
+                // Step navigation
+                document.addEventListener('click', (e) => {
+                    if (e.target.matches('[data-next-step]')) {
+                        this.nextStep();
+                    }
+
+                    if (e.target.matches('[data-prev-step]')) {
+                        this.prevStep();
+                    }
+
+                    if (e.target.matches('[data-place-order]')) {
+                        this.placeOrder();
+                    }
+
+                    if (e.target.matches('[data-delivery-option]')) {
+                        this.selectDeliveryOption(e.target);
+                    }
+
+                    if (e.target.matches('[data-payment-method]')) {
+                        this.selectPaymentMethod(e.target);
+                    }
+
+                    if (e.target.matches('[data-collapsible-trigger]')) {
+                        this.toggleCollapsible(e.target);
+                    }
+
+                    if (e.target.matches('[data-close-modal]')) {
+                        this.closeSuccessModal();
+                    }
+                });
+
+                // Form validation
+                document.addEventListener('input', (e) => {
+                    if (e.target.matches('.form-input')) {
+                        this.validateForm();
+                    }
+                });
+
+                // Card number formatting
+                document.addEventListener('input', (e) => {
+                    if (e.target.placeholder === '1234 5678 9012 3456') {
+                        this.formatCardNumber(e.target);
+                    }
+                    if (e.target.placeholder === 'MM/YY') {
+                        this.formatExpiry(e.target);
+                    }
+                });
+            }
+
+            nextStep() {
+                if (this.validateCurrentStep()) {
+                    this.currentStep++;
+                    this.updateStepDisplay();
+                    this.updateProgress();
+                }
+            }
+
+            prevStep() {
+                this.currentStep--;
+                this.updateStepDisplay();
+                this.updateProgress();
+            }
+
+            updateStepDisplay() {
+                // Hide all steps
+                document.querySelectorAll('[data-checkout-step]').forEach(step => {
+                    step.classList.add('hidden');
+                });
+
+                // Show current step
+                document.querySelector(`[data-checkout-step="${this.currentStep}"]`).classList.remove('hidden');
+
+                // Update step indicators
+                document.querySelectorAll('[data-step]').forEach(step => {
+                    step.classList.remove('active', 'completed');
+                    const stepNumber = parseInt(step.dataset.step);
+
+                    if (stepNumber < this.currentStep) {
+                        step.classList.add('completed');
+                    } else if (stepNumber === this.currentStep) {
+                        step.classList.add('active');
+                    }
+                });
+
+                // Update titles
+                const titles = {
+                    1: { title: 'Customer Information', subtitle: 'Please provide your contact details' },
+                    2: { title: 'Shipping Address', subtitle: 'Where should we deliver your order?' },
+                    3: { title: 'Delivery Options', subtitle: 'Choose your preferred shipping method' },
+                    4: { title: 'Payment Information', subtitle: 'Secure payment with SSL encryption' }
+                };
+
+                const currentTitle = titles[this.currentStep];
+                document.querySelector('[data-step-title]').textContent = currentTitle.title;
+                document.querySelector('[data-step-subtitle]').textContent = currentTitle.subtitle;
+            }
+
+            updateProgress() {
+                const progressFill = document.querySelector('[data-progress-fill]');
+                const progress = (this.currentStep / 4) * 100;
+                progressFill.style.width = `${progress}%`;
+            }
+
+            validateCurrentStep() {
+                const currentStepElement = document.querySelector(`[data-checkout-step="${this.currentStep}"]`);
+                const requiredInputs = currentStepElement.querySelectorAll('input[required], select[required]');
+
+                let isValid = true;
+                requiredInputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        input.style.borderColor = '#EF4444';
+                        isValid = false;
+                    } else {
+                        input.style.borderColor = '#374151';
+                    }
+                });
+
+                return isValid;
+            }
+
+            validateForm() {
+                const placeOrderBtn = document.querySelector('[data-place-order]');
+                const currentStepElement = document.querySelector(`[data-checkout-step="4"]`);
+                const requiredInputs = currentStepElement.querySelectorAll('input[required]');
+
+                let isValid = true;
+                requiredInputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                    }
+                });
+
+                placeOrderBtn.disabled = !isValid;
+            }
+
+            selectDeliveryOption(option) {
+                // Remove selected class from all options
+                document.querySelectorAll('[data-delivery-option]').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+
+                // Add selected class to clicked option
+                option.classList.add('selected');
+
+                // Update delivery price
+                this.selectedDeliveryPrice = parseFloat(option.dataset.deliveryPrice);
+                this.updateOrderSummary();
+            }
+
+            selectPaymentMethod(method) {
+                // Remove selected class from all methods
+                document.querySelectorAll('[data-payment-method]').forEach(m => {
+                    m.classList.remove('selected');
+                });
+
+                // Add selected class to clicked method
+                method.classList.add('selected');
+
+                // Show/hide card details
+                const cardDetails = document.querySelector('[data-card-details]');
+                const paymentRadio = method.querySelector('input[type="radio"]');
+
+                if (paymentRadio.value === 'card') {
+                    cardDetails.style.display = 'block';
+                } else {
+                    cardDetails.style.display = 'none';
+                }
+            }
+
+            toggleCollapsible(trigger) {
+                const content = trigger.nextElementSibling;
+                const icon = trigger.querySelector('svg');
+
+                if (content.classList.contains('active')) {
+                    content.classList.remove('active');
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    content.classList.add('active');
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            }
+
+            loadOrderSummary() {
+                if (!window.warkxApp) return;
+
+                const cart = window.warkxApp.cart;
+                const container = document.querySelector('[data-order-items]');
+
+                if (cart.length === 0) {
+                    container.innerHTML = '<p class="text-slate-gray">Your cart is empty</p>';
+                    return;
+                }
+
+                container.innerHTML = cart.map(item => `
+                    <div class="summary-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="flex-1">
+                            <h4 class="font-medium">${item.name}</h4>
+                            <p class="text-slate-gray text-sm">Qty: ${item.quantity}</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-semibold">$${(item.price * item.quantity).toFixed(2)}</span>
+                        </div>
+                    </div>
+                `).join('');
+
+                this.updateOrderSummary();
+            }
+
+            updateOrderSummary() {
+                if (!window.warkxApp) return;
+
+                const cart = window.warkxApp.cart;
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const shipping = this.selectedDeliveryPrice;
+                const tax = subtotal * 0.08; // 8% tax
+                const total = subtotal + shipping + tax;
+
+                document.querySelector('[data-subtotal]').textContent = `$${subtotal.toFixed(2)}`;
+                document.querySelector('[data-shipping-cost]').textContent = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
+                document.querySelector('[data-tax]').textContent = `$${tax.toFixed(2)}`;
+                document.querySelector('[data-total]').textContent = `$${total.toFixed(2)}`;
+            }
+
+            formatCardNumber(input) {
+                let value = input.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+                let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                input.value = formattedValue;
+            }
+
+            formatExpiry(input) {
+                let value = input.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                input.value = value;
+            }
+
+            placeOrder() {
+                // Show loading state
+                const placeOrderBtn = document.querySelector('[data-place-order]');
+                const originalText = placeOrderBtn.textContent;
+                placeOrderBtn.textContent = 'Processing...';
+                placeOrderBtn.disabled = true;
+
+                // Simulate API call
+                setTimeout(() => {
+                    // Show success modal
+                    document.querySelector('[data-success-modal]').classList.remove('hidden');
+                    document.querySelector('[data-success-modal]').classList.add('flex');
+
+                    // Clear cart
+                    if (window.warkxApp) {
+                        window.warkxApp.cart = [];
+                        window.warkxApp.saveCart();
+                        window.warkxApp.updateCartUI();
+                    }
+
+                    // Reset button
+                    placeOrderBtn.textContent = originalText;
+                    placeOrderBtn.disabled = false;
+                }, 2000);
+            }
+
+            closeSuccessModal() {
+                document.querySelector('[data-success-modal]').classList.add('hidden');
+                document.querySelector('[data-success-modal]').classList.remove('flex');
+
+                // Redirect to home page
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Initialize checkout page
+        document.addEventListener('DOMContentLoaded', () => {
+            window.checkoutPage = new CheckoutPage();
+        });
+    </script>
+</body>
+
+</html>
