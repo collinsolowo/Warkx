@@ -253,4 +253,5 @@ This project is created for demonstration purposes. All design elements and code
 **Warkx** - Redefining everyday style with premium fashion designed for movement and built for confidence.
 
 Experience the future of fashion with our 24/7 automated ordering system and cutting-edge design philosophy.#   W a r k x  
+ #   W a r k x  
  
