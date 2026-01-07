@@ -274,7 +274,7 @@ class WarkxApp {
         const totalPrice = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
         if (cartCount) cartCount.textContent = totalItems;
-        if (cartTotal) cartTotal.textContent = `$${totalPrice}`;
+        if (cartTotal) cartTotal.textContent = `₦${totalPrice}`;
 
         if (cartItems) {
             cartItems.innerHTML = this.cart.map(item => `
@@ -283,7 +283,7 @@ class WarkxApp {
                         <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded">
                         <div>
                             <h4 class="text-sm font-medium text-white">${item.name}</h4>
-                            <p class="text-xs text-slate-400">$${item.price}</p>
+                            <p class="text-xs text-slate-400">₦${item.price}</p>
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
@@ -386,7 +386,7 @@ class WarkxApp {
                 <div class="p-4">
                     <h3 class="text-white font-medium mb-1">${product.name}</h3>
                     <div class="flex items-center justify-between">
-                        <span class="text-cyan-400 font-semibold">$${product.price}</span>
+                        <span class="text-cyan-400 font-semibold">₦${product.price}</span>
                         <div class="flex items-center text-yellow-400">
                             <span class="text-sm">★</span>
                             <span class="text-xs text-slate-400 ml-1">${product.rating}</span>
