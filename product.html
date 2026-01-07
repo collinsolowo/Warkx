@@ -23,7 +23,7 @@
                     colors: {
                         'navy': '#0B1220',
                         'slate-dark': '#0F172A',
-                        'cyan-accent': '#00E5FF',
+                        'cyan-accent': '#C9A227',
                         'white-soft': '#F8FAFC',
                         'slate-gray': '#94A3B8',
                         'emerald-accent': '#22C55E'
@@ -54,7 +54,7 @@
 
         /* Gradient text */
         .gradient-text {
-            background: linear-gradient(135deg, #00E5FF, #22C55E);
+            background: linear-gradient(135deg, #C9A227, #22C55E);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -70,7 +70,7 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #00E5FF;
+            background: #C9A227;
             border-radius: 4px;
         }
 
@@ -110,7 +110,7 @@
         }
 
         .thumbnail.active {
-            border-color: #00E5FF;
+            border-color: #C9A227;
         }
 
         .thumbnail:hover {
@@ -135,13 +135,13 @@
         }
 
         .size-option:hover {
-            border-color: #00E5FF;
+            border-color: #C9A227;
         }
 
         .size-option.selected {
-            border-color: #00E5FF;
+            border-color: #C9A227;
             background: rgba(0, 229, 255, 0.1);
-            color: #00E5FF;
+            color: #C9A227;
         }
 
         .size-option.disabled {
@@ -171,7 +171,7 @@
         }
 
         .color-option.selected {
-            border-color: #00E5FF;
+            border-color: #C9A227;
             transform: scale(1.1);
         }
 
@@ -185,7 +185,7 @@
         }
 
         .color-option.selected::after {
-            border-color: #00E5FF;
+            border-color: #C9A227;
         }
 
         /* Accordion */
@@ -258,7 +258,7 @@
             top: 50%;
             transform: translateY(-50%);
             background: rgba(0, 229, 255, 0.1);
-            border: 2px solid #00E5FF;
+            border: 2px solid #C9A227;
             border-radius: 50%;
             width: 48px;
             height: 48px;
@@ -284,7 +284,7 @@
 
         /* Button styles */
         .btn-primary {
-            background: linear-gradient(135deg, #00E5FF, #22C55E);
+            background: linear-gradient(135deg, #C9A227, #22C55E);
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
@@ -296,17 +296,18 @@
         }
 
         .btn-secondary {
-            border: 2px solid #00E5FF;
-            color: #00E5FF;
+            border: 2px solid #C9A227;
+            color: #C9A227;
             background: transparent;
             transition: all 0.3s ease;
         }
 
         .btn-secondary:hover {
-            background: #00E5FF;
+            background: #C9A227;
             color: #0B1220;
         }
     </style>
+    <base target="_blank">
 </head>
 
 <body class="bg-navy text-white-soft font-inter">
@@ -423,7 +424,7 @@
                             <span class="text-slate-gray">•</span>
                             <span class="text-slate-gray">In Stock</span>
                         </div>
-                        <div class="text-3xl font-bold gradient-text mb-6" data-product-price>$299</div>
+                        <div class="text-3xl font-bold gradient-text mb-6" data-product-price>₦299</div>
                     </div>
 
                     <!-- Color Selection -->
@@ -703,7 +704,7 @@
             <div class="p-6 border-t border-slate-700">
                 <div class="flex items-center justify-between mb-4">
                     <span class="text-lg font-semibold">Total:</span>
-                    <span class="text-xl font-bold text-cyan-accent" data-cart-total>$0</span>
+                    <span class="text-xl font-bold text-cyan-accent" data-cart-total>₦0</span>
                 </div>
                 <a href="checkout.html"
                     class="w-full py-4 bg-gradient-to-r from-cyan-accent to-emerald-accent text-navy font-semibold rounded-lg text-center block hover:shadow-lg hover:shadow-cyan-accent/25 transition-all duration-300">
@@ -923,7 +924,7 @@
                                 <div class="p-4">
                                     <h3 class="font-semibold mb-2">${product.name}</h3>
                                     <div class="flex items-center justify-between">
-                                        <span class="text-cyan-accent font-bold">$${product.price}</span>
+                                        <span class="text-cyan-accent font-bold">₦${product.price}</span>
                                         <button class="text-sm text-slate-gray hover:text-cyan-accent transition-colors" data-add-to-cart="${product.id}">
                                             Add to Cart
                                         </button>

@@ -23,7 +23,7 @@
                     colors: {
                         'navy': '#0B1220',
                         'slate-dark': '#0F172A',
-                        'cyan-accent': '#00E5FF',
+                        'cyan-accent': '#C9A227',
                         'white-soft': '#F8FAFC',
                         'slate-gray': '#94A3B8',
                         'emerald-accent': '#22C55E'
@@ -52,7 +52,7 @@
 
         /* Gradient text */
         .gradient-text {
-            background: linear-gradient(135deg, #00E5FF, #22C55E);
+            background: linear-gradient(135deg, #C9A227, #22C55E);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -68,7 +68,7 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #00E5FF;
+            background: #C9A227;
             border-radius: 4px;
         }
 
@@ -96,7 +96,7 @@
             appearance: none;
             width: 20px;
             height: 20px;
-            background: #00E5FF;
+            background: #C9A227;
             border-radius: 50%;
             cursor: pointer;
         }
@@ -104,7 +104,7 @@
         input[type="range"]::-moz-range-thumb {
             width: 20px;
             height: 20px;
-            background: #00E5FF;
+            background: #C9A227;
             border-radius: 50%;
             cursor: pointer;
             border: none;
@@ -136,6 +136,7 @@
             }
         }
     </style>
+    <base target="_blank">
 </head>
 
 <body class="bg-navy text-white-soft font-inter">
@@ -264,8 +265,8 @@
                                 <input type="range" min="0" max="500" value="500" class="w-full" data-filter-price
                                     data-price-max>
                                 <div class="flex justify-between text-sm text-slate-gray">
-                                    <span>$0</span>
-                                    <span data-price-display>$500</span>
+                                    <span>₦0</span>
+                                    <span data-price-display>₦500</span>
                                 </div>
                             </div>
                         </div>
@@ -433,7 +434,7 @@
             <div class="p-6 border-t border-slate-700">
                 <div class="flex items-center justify-between mb-4">
                     <span class="text-lg font-semibold">Total:</span>
-                    <span class="text-xl font-bold text-cyan-accent" data-cart-total>$0</span>
+                    <span class="text-xl font-bold text-cyan-accent" data-cart-total>₦0</span>
                 </div>
                 <a href="checkout.html"
                     class="w-full py-4 bg-gradient-to-r from-cyan-accent to-emerald-accent text-navy font-semibold rounded-lg text-center block hover:shadow-lg hover:shadow-cyan-accent/25 transition-all duration-300">
@@ -552,7 +553,7 @@
 
             updatePriceFilter(maxPrice) {
                 this.currentFilters.priceMax = parseInt(maxPrice);
-                document.querySelector('[data-price-display]').textContent = `$${maxPrice}`;
+                document.querySelector('[data-price-display]').textContent = `₦${maxPrice}`;
                 this.currentPage = 1;
                 this.loadProducts();
                 this.updateActiveFilters();
@@ -606,7 +607,7 @@
                 // Reset form elements
                 document.querySelector('[data-filter-category][value="all"]').checked = true;
                 document.querySelector('[data-filter-price]').value = 500;
-                document.querySelector('[data-price-display]').textContent = '$500';
+                document.querySelector('[data-price-display]').textContent = '₦500';
 
                 // Reset size buttons
                 document.querySelectorAll('[data-filter-size]').forEach(btn => {
@@ -639,7 +640,7 @@
 
                 if (this.currentFilters.priceMax < 500) {
                     chips.push({
-                        label: `Under $${this.currentFilters.priceMax}`,
+                        label: `Under ₦${this.currentFilters.priceMax}`,
                         type: 'price',
                         value: this.currentFilters.priceMax
                     });

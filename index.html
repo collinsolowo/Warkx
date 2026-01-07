@@ -23,10 +23,11 @@
                     colors: {
                         'navy': '#0B1220',
                         'slate-dark': '#0F172A',
-                        'cyan-accent': '#00E5FF',
+                        'gold-accent': '#C9A227',
+                        'gold-light': '#C9A227',
                         'white-soft': '#F8FAFC',
                         'slate-gray': '#94A3B8',
-                        'emerald-accent': '#22C55E'
+                        'gold-dark': '#B8860B'
                     },
                     fontFamily: {
                         'sora': ['Sora', 'sans-serif'],
@@ -68,11 +69,11 @@
 
         @keyframes glow {
             from {
-                box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
             }
 
             to {
-                box-shadow: 0 0 30px rgba(0, 229, 255, 0.6);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
             }
         }
 
@@ -85,7 +86,7 @@
 
         /* Gradient text */
         .gradient-text {
-            background: linear-gradient(135deg, #00E5FF, #22C55E);
+            background: linear-gradient(135deg, #C9A227, #C9A227);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -101,12 +102,12 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #00E5FF;
+            background: #C9A227;
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #22C55E;
+            background: #C9A227;
         }
 
         /* Smooth transitions */
@@ -149,7 +150,7 @@
 
         /* Button hover effects */
         .btn-primary {
-            background: linear-gradient(135deg, #00E5FF, #22C55E);
+            background: linear-gradient(135deg, #d3a203ec, #ffbb00ef);
             position: relative;
             overflow: hidden;
         }
@@ -182,7 +183,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(34, 197, 94, 0.1));
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -190,7 +191,61 @@
         .category-card:hover::before {
             opacity: 1;
         }
+
+        /* Video Section Styles */
+        .video-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Enhanced hover effects for video items */
+        .video-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(201, 162, 39, 0.1) 50%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .video-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Video loading animation */
+        .video-loading {
+            background: linear-gradient(90deg, #0F172A 25%, #1E293B 50%, #0F172A 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* Responsive video adjustments */
+        @media (max-width: 768px) {
+            .video-item {
+                aspect-ratio: 16/9;
+            }
+        }
     </style>
+<base target="_blank">
 </head>
 
 <body class="bg-navy text-white-soft font-inter">
@@ -208,21 +263,21 @@
                     <!-- Desktop Navigation -->
                     <nav class="hidden md:flex items-center space-x-8">
                         <a href="index.html"
-                            class="text-white hover:text-cyan-accent transition-colors font-medium">Home</a>
+                            class="text-white hover:text-gold-accent transition-colors font-medium">Home</a>
                         <a href="shop.html"
-                            class="text-slate-gray hover:text-cyan-accent transition-colors font-medium">Shop</a>
+                            class="text-slate-gray hover:text-gold-accent transition-colors font-medium">Shop</a>
                         <a href="shop.html?category=men"
-                            class="text-slate-gray hover:text-cyan-accent transition-colors font-medium">Men</a>
+                            class="text-slate-gray hover:text-gold-accent transition-colors font-medium">Men</a>
                         <a href="shop.html?category=women"
-                            class="text-slate-gray hover:text-cyan-accent transition-colors font-medium">Women</a>
+                            class="text-slate-gray hover:text-gold-accent transition-colors font-medium">Women</a>
                         <a href="shop.html?category=accessories"
-                            class="text-slate-gray hover:text-cyan-accent transition-colors font-medium">Accessories</a>
+                            class="text-slate-gray hover:text-gold-accent transition-colors font-medium">Accessories</a>
                     </nav>
 
                     <!-- Header Actions -->
                     <div class="flex items-center space-x-4">
                         <!-- Search -->
-                        <button class="text-slate-gray hover:text-cyan-accent transition-colors">
+                        <button class="text-slate-gray hover:text-gold-accent transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -231,7 +286,7 @@
 
                         <!-- Cart -->
                         <a href="checkout.html">
-                            <button class="relative text-slate-gray hover:text-cyan-accent transition-colors"
+                            <button class="relative text-slate-gray hover:text-gold-accent transition-colors"
                                 data-toggle-cart data-cart-icon>
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -239,13 +294,13 @@
                                     </path>
                                 </svg>
                                 <span
-                                    class="absolute -top-2 -right-2 bg-cyan-accent text-navy text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
+                                    class="absolute -top-2 -right-2 bg-gold-accent text-navy text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
                                     data-cart-count>0</span>
                             </button>
                         </a>
 
                         <!-- Mobile Menu -->
-                        <button class="md:hidden text-slate-gray hover:text-cyan-accent" data-mobile-menu>
+                        <button class="md:hidden text-slate-gray hover:text-gold-accent" data-mobile-menu>
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 6h16M4 12h16M4 18h16"></path>
@@ -258,15 +313,15 @@
                 <div class="md:hidden hidden" data-mobile-menu-content>
                     <div class="py-4 space-y-2">
                         <a href="index.html"
-                            class="block text-white hover:text-cyan-accent transition-colors font-medium py-2">Home</a>
+                            class="block text-white hover:text-gold-accent transition-colors font-medium py-2">Home</a>
                         <a href="shop.html"
-                            class="block text-slate-gray hover:text-cyan-accent transition-colors font-medium py-2">Shop</a>
+                            class="block text-slate-gray hover:text-gold-accent transition-colors font-medium py-2">Shop</a>
                         <a href="shop.html?category=men"
-                            class="block text-slate-gray hover:text-cyan-accent transition-colors font-medium py-2">Men</a>
+                            class="block text-slate-gray hover:text-gold-accent transition-colors font-medium py-2">Men</a>
                         <a href="shop.html?category=women"
-                            class="block text-slate-gray hover:text-cyan-accent transition-colors font-medium py-2">Women</a>
+                            class="block text-slate-gray hover:text-gold-accent transition-colors font-medium py-2">Women</a>
                         <a href="shop.html?category=accessories"
-                            class="block text-slate-gray hover:text-cyan-accent transition-colors font-medium py-2">Accessories</a>
+                            class="block text-slate-gray hover:text-gold-accent transition-colors font-medium py-2">Accessories</a>
                     </div>
                 </div>
             </div>
@@ -288,18 +343,173 @@
                         class="btn-primary px-8 py-4 rounded-lg text-white font-semibold hover:animate-glow transition-all duration-300 transform hover:scale-105">
                         Shop New Arrivals
                     </a>
-                    <a href="#categories"
-                        class="border-2 border-cyan-accent text-cyan-accent px-8 py-4 rounded-lg font-semibold hover:bg-cyan-accent hover:text-navy transition-all duration-300">
-                        Explore Collection
+                    <a href="#video-array"
+                        class="border-2 border-gold-accent text-gold-accent px-8 py-4 rounded-lg font-semibold hover:bg-gold-accent hover:text-navy transition-all duration-300">
+                        Watch Stories
                     </a>
                 </div>
             </div>
         </div>
 
         <!-- Floating elements -->
-        <div class="absolute top-20 left-10 w-20 h-20 bg-cyan-accent/10 rounded-full animate-float"></div>
-        <div class="absolute bottom-20 right-10 w-32 h-32 bg-emerald-accent/10 rounded-full animate-float"
+        <div class="absolute top-20 left-10 w-20 h-20 bg-gold-accent/10 rounded-full animate-float"></div>
+        <div class="absolute bottom-20 right-10 w-32 h-32 bg-gold-light/10 rounded-full animate-float"
             style="animation-delay: -2s;"></div>
+    </section>
+
+    <!-- Video Array Section -->
+    <section id="video-array" class="py-20 bg-navy relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-navy/50 to-navy opacity-80"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-6xl font-sora font-bold mb-6 leading-tight">
+                    <span class="gradient-text">Visual Stories</span>
+                </h2>
+                <p class="text-xl text-slate-gray max-w-3xl mx-auto">
+                    Immerse yourself in the world of Warkx through cinematic moments
+                </p>
+            </div>
+
+            <!-- Video Grid Array -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                <!-- Video Item 1 -->
+                <div class="video-item group relative overflow-hidden rounded-2xl bg-slate-900 aspect-video" data-aos="fade-up" data-aos-delay="100">
+                    <video 
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                        autoplay 
+                        muted 
+                        loop 
+                        playsinline
+                        poster="https://images.unsplash.com/photo-1516826957135-700dedea698c?w=800&h=450&fit=crop">
+                        <source src="resources/2.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <h3 class="text-lg font-sora font-bold text-white mb-1">Midnight Flow</h3>
+                        <p class="text-sm text-slate-gray">Fluid motion in darkness</p>
+                    </div>
+                </div>
+
+                <!-- Video Item 2 -->
+                <div class="video-item group relative overflow-hidden rounded-2xl bg-slate-900 aspect-video" data-aos="fade-up" data-aos-delay="200">
+                    <video 
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                        autoplay 
+                        muted 
+                        loop 
+                        playsinline
+                        poster="https://images.unsplash.com/photo-1490728320049-317790c3a827?w=800&h=450&fit=crop">
+                        <source src="resources/1.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <h3 class="text-lg font-sora font-bold text-white mb-1">Golden Hour</h3>
+                        <p class="text-sm text-slate-gray">When light becomes art</p>
+                    </div>
+                </div>
+
+                <!-- Video Item 3 -->
+                <div class="video-item group relative overflow-hidden rounded-2xl bg-slate-900 aspect-video" data-aos="fade-up" data-aos-delay="300">
+                    <video 
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                        autoplay 
+                        muted 
+                        loop 
+                        playsinline
+                        poster="https://images.unsplash.com/photo-1542037104857-4bb4b9fe2433?w=800&h=450&fit=crop">
+                        <source src="resources/2.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <h3 class="text-lg font-sora font-bold text-white mb-1">Urban Edge</h3>
+                        <p class="text-sm text-slate-gray">Street meets sophistication</p>
+                    </div>
+                </div>
+
+                <!-- Video Item 4 -->
+                <div class="video-item group relative overflow-hidden rounded-2xl bg-slate-900 aspect-video" data-aos="fade-up" data-aos-delay="400">
+                    <video 
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                        autoplay 
+                        muted 
+                        loop 
+                        playsinline
+                        poster="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=450&fit=crop">
+                        <source src="resources/1.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <h3 class="text-lg font-sora font-bold text-white mb-1">Metallic Dreams</h3>
+                        <p class="text-sm text-slate-gray">Future reflections</p>
+                    </div>
+                </div>
+
+                <!-- Video Item 5 -->
+                <div class="video-item group relative overflow-hidden rounded-2xl bg-slate-900 aspect-video" data-aos="fade-up" data-aos-delay="500">
+                    <video 
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                        autoplay 
+                        muted 
+                        loop 
+                        playsinline
+                        poster="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800&h=450&fit=crop">
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-young-woman-walking-in-the-city-at-night-42957-large.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <h3 class="text-lg font-sora font-bold text-white mb-1">Night Walker</h3>
+                        <p class="text-sm text-slate-gray">After hours elegance</p>
+                    </div>
+                </div>
+
+                <!-- Video Item 6 -->
+                <div class="video-item group relative overflow-hidden rounded-2xl bg-slate-900 aspect-video" data-aos="fade-up" data-aos-delay="600">
+                    <video 
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                        autoplay 
+                        muted 
+                        loop 
+                        playsinline
+                        poster="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=450&fit=crop">
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-model-in-a-fashion-collection-42960-large.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <h3 class="text-lg font-sora font-bold text-white mb-1">Runway Ready</h3>
+                        <p class="text-sm text-slate-gray">Haute couture moments</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Video Hero -->
+            <div class="relative overflow-hidden rounded-3xl bg-slate-900 aspect-video lg:aspect-[21/9]" data-aos="fade-up">
+                <video 
+                    class="w-full h-full object-cover" 
+                    autoplay 
+                    muted 
+                    loop 
+                    playsinline
+                    poster="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&h=900&fit=crop">
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-fashion-designer-working-on-a-sketch-42948-large.mp4" type="video/mp4">
+                </video>
+                <div class="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/50 to-transparent"></div>
+                <div class="absolute inset-0 flex items-center">
+                    <div class="max-w-2xl ml-8 md:ml-16">
+                        <h3 class="text-3xl md:text-5xl font-sora font-bold text-white mb-4 leading-tight">
+                            Crafted with <span class="gradient-text">Precision</span>
+                        </h3>
+                        <p class="text-lg md:text-xl text-slate-gray mb-8 max-w-xl">
+                            Every stitch tells a story. Every design captures a moment. 
+                            Experience fashion as moving art.
+                        </p>
+                        <a href="shop.html" 
+                           class="btn-primary px-8 py-4 rounded-lg text-white font-semibold hover:animate-glow transition-all duration-300 transform hover:scale-105 inline-block">
+                            Explore Collection
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Featured Categories -->
@@ -316,7 +526,7 @@
                 <div class="category-card glass rounded-2xl p-8 text-center group hover:scale-105 transition-all duration-500"
                     data-aos="fade-up" data-aos-delay="100">
                     <div
-                        class="w-20 h-20 bg-gradient-to-br from-cyan-accent to-emerald-accent rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        class="w-20 h-20 bg-gradient-to-br from-gold-accent to-gold-light rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-10 h-10 text-navy" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
@@ -325,7 +535,7 @@
                     <h3 class="text-2xl font-sora font-bold mb-4">Men</h3>
                     <p class="text-slate-gray mb-6">Technical outerwear and premium essentials for the modern man</p>
                     <a href="shop.html?category=men"
-                        class="inline-flex items-center text-cyan-accent font-semibold hover:text-emerald-accent transition-colors">
+                        class="inline-flex items-center text-gold-accent font-semibold hover:text-gold-light transition-colors">
                         Shop Men
                         <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
@@ -339,7 +549,7 @@
                 <div class="category-card glass rounded-2xl p-8 text-center group hover:scale-105 transition-all duration-500"
                     data-aos="fade-up" data-aos-delay="200">
                     <div
-                        class="w-20 h-20 bg-gradient-to-br from-cyan-accent to-emerald-accent rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        class="w-20 h-20 bg-gradient-to-br from-gold-accent to-gold-light rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-10 h-10 text-navy" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
@@ -348,7 +558,7 @@
                     <h3 class="text-2xl font-sora font-bold mb-4">Women</h3>
                     <p class="text-slate-gray mb-6">Sophisticated pieces that blend elegance with contemporary edge</p>
                     <a href="shop.html?category=women"
-                        class="inline-flex items-center text-cyan-accent font-semibold hover:text-emerald-accent transition-colors">
+                        class="inline-flex items-center text-gold-accent font-semibold hover:text-gold-light transition-colors">
                         Shop Women
                         <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
@@ -362,7 +572,7 @@
                 <div class="category-card glass rounded-2xl p-8 text-center group hover:scale-105 transition-all duration-500"
                     data-aos="fade-up" data-aos-delay="300">
                     <div
-                        class="w-20 h-20 bg-gradient-to-br from-cyan-accent to-emerald-accent rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        class="w-20 h-20 bg-gradient-to-br from-gold-accent to-gold-light rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-10 h-10 text-navy" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -371,7 +581,7 @@
                     <h3 class="text-2xl font-sora font-bold mb-4">Accessories</h3>
                     <p class="text-slate-gray mb-6">Finishing touches that elevate every outfit with precision</p>
                     <a href="shop.html?category=accessories"
-                        class="inline-flex items-center text-cyan-accent font-semibold hover:text-emerald-accent transition-colors">
+                        class="inline-flex items-center text-gold-accent font-semibold hover:text-gold-light transition-colors">
                         Shop Accessories
                         <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
@@ -418,7 +628,7 @@
                 <!-- Quality -->
                 <div class="text-center" data-aos="fade-up" data-aos-delay="100">
                     <div
-                        class="w-24 h-24 bg-gradient-to-br from-cyan-accent to-emerald-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                        class="w-24 h-24 bg-gradient-to-br from-gold-accent to-gold-light rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg class="w-12 h-12 text-navy" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -427,7 +637,7 @@
                     <p class="text-slate-gray mb-6">Every piece is crafted with meticulous attention to detail using the
                         finest materials and innovative techniques.</p>
                     <div class="bg-slate-800 rounded-full h-2 mb-2">
-                        <div class="bg-gradient-to-r from-cyan-accent to-emerald-accent h-2 rounded-full"
+                        <div class="bg-gradient-to-r from-gold-accent to-gold-light h-2 rounded-full"
                             style="width: 95%"></div>
                     </div>
                     <p class="text-sm text-slate-gray">95% Customer Satisfaction</p>
@@ -436,7 +646,7 @@
                 <!-- Speed -->
                 <div class="text-center" data-aos="fade-up" data-aos-delay="200">
                     <div
-                        class="w-24 h-24 bg-gradient-to-br from-cyan-accent to-emerald-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                        class="w-24 h-24 bg-gradient-to-br from-gold-accent to-gold-light rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg class="w-12 h-12 text-navy" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
@@ -445,7 +655,7 @@
                     <p class="text-slate-gray mb-6">Experience lightning-fast shipping with our automated 24/7 ordering
                         system designed for instant gratification.</p>
                     <div class="bg-slate-800 rounded-full h-2 mb-2">
-                        <div class="bg-gradient-to-r from-cyan-accent to-emerald-accent h-2 rounded-full"
+                        <div class="bg-gradient-to-r from-gold-accent to-gold-light h-2 rounded-full"
                             style="width: 98%"></div>
                     </div>
                     <p class="text-sm text-slate-gray">98% On-Time Delivery</p>
@@ -454,7 +664,7 @@
                 <!-- Confidence -->
                 <div class="text-center" data-aos="fade-up" data-aos-delay="300">
                     <div
-                        class="w-24 h-24 bg-gradient-to-br from-cyan-accent to-emerald-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                        class="w-24 h-24 bg-gradient-to-br from-gold-accent to-gold-light rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg class="w-12 h-12 text-navy" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -464,7 +674,7 @@
                     <p class="text-slate-gray mb-6">Our designs empower you to express your unique style with pieces
                         that make a statement wherever you go.</p>
                     <div class="bg-slate-800 rounded-full h-2 mb-2">
-                        <div class="bg-gradient-to-r from-cyan-accent to-emerald-accent h-2 rounded-full"
+                        <div class="bg-gradient-to-r from-gold-accent to-gold-light h-2 rounded-full"
                             style="width: 92%"></div>
                     </div>
                     <p class="text-sm text-slate-gray">92% Would Recommend</p>
@@ -483,7 +693,7 @@
 
                 <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-4" data-newsletter>
                     <input type="email" placeholder="Enter your email"
-                        class="flex-1 px-6 py-4 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-gray focus:outline-none focus:border-cyan-accent transition-colors"
+                        class="flex-1 px-6 py-4 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-gray focus:outline-none focus:border-gold-accent transition-colors"
                         required>
                     <button type="submit"
                         class="btn-primary px-8 py-4 rounded-lg text-white font-semibold hover:animate-glow transition-all duration-300 transform hover:scale-105">
@@ -538,7 +748,7 @@
             <div class="p-6 border-t border-slate-700">
                 <div class="flex items-center justify-between mb-4">
                     <span class="text-lg font-semibold">Total:</span>
-                    <span class="text-xl font-bold text-cyan-accent" data-cart-total>$0</span>
+                    <span class="text-xl font-bold text-gold-accent" data-cart-total>$0</span>
                 </div>
                 <a href="checkout.html"
                     class="btn-primary w-full py-4 rounded-lg text-white font-semibold text-center block hover:animate-glow transition-all duration-300">
@@ -563,8 +773,43 @@
             if (productGrid && window.warkxApp) {
                 window.warkxApp.renderProducts(trendingProducts, productGrid);
             }
+
+            // Enhanced video hover effects
+            const videoItems = document.querySelectorAll('.video-item');
+            videoItems.forEach(item => {
+                const video = item.querySelector('video');
+                
+                item.addEventListener('mouseenter', () => {
+                    if (video) {
+                        video.style.transform = 'scale(1.1)';
+                        video.style.filter = 'brightness(1.1)';
+                    }
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    if (video) {
+                        video.style.transform = 'scale(1)';
+                        video.style.filter = 'brightness(1)';
+                    }
+                });
+            });
+
+            // Intersection Observer for video performance
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target;
+                    if (entry.isIntersecting) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            document.querySelectorAll('video').forEach(video => {
+                videoObserver.observe(video);
+            });
         });
     </script>
 </body>
-
 </html>
